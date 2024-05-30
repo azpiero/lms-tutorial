@@ -32,8 +32,9 @@ const CreatePage = () => {
   const { isSubmitting, isValid } = form.formState;
   const onSubmit = async (values: formValues) => {
     try {
-      const response = await axios.post('/api/course', values);
+      const response = await axios.post('/api/courses', values);
       router.push(`/teacher/courses/${response.data.id}`);
+      toast.success('Course created successfully');
     } catch {
       toast.error('An error occurred. Please try again');
     }
