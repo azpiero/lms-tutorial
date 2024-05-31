@@ -10,23 +10,23 @@ import { Button } from '@/components/ui/button';
 import { Pencil } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { Course } from '@prisma/client';
+import { Combobox } from '@/components/ui/combobox';
 
-interface DescriptionFormProps {
+interface CategoryFormProps {
   initialData: Course;
   courseId: string;
+  options: { label: string; value: string }[];
 }
 
 const formSchema = z.object({
-  description: z.string().min(1, {
-    message: 'description is required',
-  }),
+  categoryId: z.string().min(1),
 });
+
 type FormSchemaValue = z.infer<typeof formSchema>;
 
-export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
+export const CategoryForm = ({ initialData, courseId, options }: CategoryFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const toggleEditing = () => {
     setIsEditing((prev) => !prev);
@@ -35,7 +35,7 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
   const form = useForm<FormSchemaValue>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || '',
+      categoryId: initialData?.categoryId || '',
     },
   });
 
@@ -43,7 +43,7 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
   const onSubmit = async (values: FormSchemaValue) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success('Course description updated successfully');
+      toast.success('Course category updated successfully');
       toggleEditing();
       router.refresh();
     } catch {
@@ -51,10 +51,12 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
     }
   };
 
+  const selectedOption = options.find((option) => option.value === initialData.categoryId);
+
   return (
     <div className='mt-6 border bg-slate-100 rounded-md p-4'>
       <div className='font-medium flex items-center justify-between'>
-        Course Description
+        Course Category
         <Button variant='ghost' onClick={toggleEditing}>
           {isEditing ? (
             <>Cancel</>
@@ -67,8 +69,8 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
         </Button>
       </div>
       {!isEditing && (
-        <div className={cn('text-sm mt-2', !initialData.description && 'text-slate-500 italic')}>
-          {initialData.description || 'No description'}
+        <div className={cn('text-sm mt-2', !initialData.categoryId && 'text-slate-500 italic')}>
+          {selectedOption?.label || 'No category'}
         </div>
       )}
       {isEditing && (
@@ -76,11 +78,11 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 mt-4'>
             <FormField
               control={form.control}
-              name='description'
+              name='categoryId'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea disabled={isSubmitting} placeholder='Enter course description' {...field} />
+                    <Combobox options={...options} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,4 +100,4 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
   );
 };
 
-export default DescriptionForm;
+export default CategoryForm;
