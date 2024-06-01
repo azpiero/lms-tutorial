@@ -1,3 +1,4 @@
+import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
 
@@ -11,7 +12,7 @@ export async function PUT(req: Request, { params }: { params: { courseId: string
 
     const { list } = await req.json();
 
-    const ownCourse = await db.course.findFirst({
+    const ownCourse = await db.course.findUnique({
       where: {
         id: params.courseId,
         userId,

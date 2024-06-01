@@ -7,12 +7,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { Pencil, PlusCircle } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { Course } from '@prisma/client';
+import { Chapter, Course } from '@prisma/client';
 import ChaptersList from './chapters-list';
 
 interface ChaptersFormProps {
@@ -55,7 +55,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
       setIsUpdating(true);
-      await axios.post(`/api/courses/${courseId}/chapters/reorder`, {
+      await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
         list: updateData,
       });
       toast.success('Chapters reordered');
