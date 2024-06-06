@@ -33,6 +33,7 @@ export const ChapterVideoForm = ({ initialData, courseId, chapterId }: ChapterVi
 
   const onSubmit = async (values: FormSchemaValue) => {
     try {
+      console.log('values', values);
       await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
       toast.success('Chapter video updated successfully');
       toggleEditing();
