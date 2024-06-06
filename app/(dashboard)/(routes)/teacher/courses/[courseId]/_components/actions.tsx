@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import ConfirmModal from '@/components/modals/confirm-modal';
 import { Button } from '@/components/ui/button';
+import { useConfettiStore } from '@/hooks/use-confetti-store';
 
 interface ActionsProps {
   disabled: boolean;
@@ -16,6 +17,7 @@ interface ActionsProps {
 
 const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const confetti = useConfettiStore();
   const router = useRouter();
   const onDelete = async () => {
     try {
@@ -40,6 +42,7 @@ const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
       } else {
         await axios.patch(`/api/courses/${courseId}/publish`);
         toast.success('Course updated successfully');
+        confetti.onOpen();
       }
       router.refresh();
     } catch (error) {
