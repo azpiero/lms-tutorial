@@ -14,10 +14,10 @@ interface VideoPlayerProps {
   chapterId: string;
   title: string;
   courseId: string;
-  nextChapterId: string;
-  playbackId: string;
+  nextChapterId?: string;
+  playbackId?: string;
   isLocked: boolean;
-  completeOnEnd: boolean;
+  completeOnEnd?: boolean;
 }
 
 export const VideoPlayer = ({

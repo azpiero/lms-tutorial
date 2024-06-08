@@ -5,7 +5,7 @@ import { authMiddleware } from '@clerk/nextjs';
  * api/uploadthingをpublicにしないと通らない
  */
 export default authMiddleware({
-  publicRoutes: ['/api/uploadthing'],
+  publicRoutes: ['/api/webhook'],
 });
 
 export const config = {
