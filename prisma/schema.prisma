@@ -4,8 +4,12 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// previewFeatures fulltextは現在mysqlのみ
+// https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search
+
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
