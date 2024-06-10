@@ -63,7 +63,7 @@ export const getChapter = async ({ userId, courseId, chapterId }: GetChapterProp
           courseId,
           isPublished: true,
           position: {
-            gt: chapter.position,
+            gt: chapter?.position,
           },
         },
         orderBy: {

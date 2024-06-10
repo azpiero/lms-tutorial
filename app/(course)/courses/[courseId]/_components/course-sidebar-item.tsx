@@ -16,7 +16,7 @@ export const CourseSidebarItem = ({ id, label, isCompleted, courseId, isLocked }
   const pathname = usePathname();
   const router = useRouter();
 
-  const Icon = isLocked ? Lock : CheckCircle;
+  const Icon = isLocked ? Lock : isCompleted ? CheckCircle : PlayCircle;
   const isActive = pathname?.includes(id);
 
   const onClick = () => {
